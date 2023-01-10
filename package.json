@@ -1,0 +1,53 @@
+{
+  "name": "phaser-rade-game",
+  "version": "1.1.2",
+  "description": "A Phaser 3 Project Template",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npm run build && npm run static-server",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --config ./webpack/webpack.prod.js",
+    "develop": "cross-env NODE_ENV=development webpack serve --config ./webpack/webpack.dev.js",
+    "static-server": "static-server ./build",
+    "clean": "rimraf build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/photonstorm/phaser3-project-template.git"
+  },
+  "author": "Richard Davey <rdavey@gmail.com> (http://www.photonstorm.com)",
+  "license": "MIT",
+  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "bugs": {
+    "url": "https://github.com/photonstorm/phaser3-project-template/issues"
+  },
+  "homepage": "https://github.com/photonstorm/phaser3-project-template#readme",
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/preset-env": "^7.7.1",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^10.2.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.4.2",
+    "dotenv": "^8.2.0",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.4.5",
+    "rimraf": "^3.0.2",
+    "static-server": "^2.2.1",
+    "style-loader": "^1.1.3",
+    "terser-webpack-plugin": "^2.3.5",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
+    "webpack": "^5.65.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "phaser": "^3.55.2"
+  }
+}
