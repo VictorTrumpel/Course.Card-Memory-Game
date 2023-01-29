@@ -1,3 +1,4 @@
+import { Timer } from './../Timer'
 import { Scene } from 'phaser'
 import { Card } from '../Card'
 import { CardDealer } from '../CardDealer'
@@ -11,6 +12,8 @@ export class GameScene extends Scene {
   private _cardDealer: CardDealer
 
   private _menuDOM: MemoDOM
+
+  private _timer: Timer
 
   onStartGame = async () => {
     await this._cardDealer.createCards()
@@ -36,6 +39,14 @@ export class GameScene extends Scene {
   async create({ isRestart }: SceneCreateProps) {
     this._cardDealer = new CardDealer(this)
 
+    this._timer = new Timer(this, {
+      maxTime: 3,
+      x: 200,
+      y: 10
+    })
+  
+    this._timer.start()
+
     this._menuDOM = new MemoDOM()
 
     isRestart
@@ -49,6 +60,5 @@ export class GameScene extends Scene {
     this._menuDOM.onStartGame = this.onStartGame
     this._menuDOM.onRestartGame = this.onRestartGame
     this._cardDealer.onAllCardsOpen = this.onAllCardsOpen
-    
   }
 }
