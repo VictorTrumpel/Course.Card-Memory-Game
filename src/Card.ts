@@ -1,4 +1,4 @@
-import { GameObjects, Scene } from 'phaser'
+import { GameObjects, Scene, Tilemaps } from 'phaser'
 
 export type CardPositon = { x: number, y: number }
 type CardId = '1' | '2' | '3' | '4' | '5'
@@ -33,19 +33,47 @@ export class Card extends GameObjects.Sprite {
         ease: 'Linear',
         x,
         y,
-        duration: 500,
+        duration: 200,
         onComplete: animationResolve
       })
     })
   }
 
-  open() {
-    this._isOpen = true
-    this.setTexture('card' + this.id)
+  flip() {
+    return new Promise((animationReslover) => {
+      const show = () => {
+        const texture = this._isOpen
+          ? 'card'
+          : 'card' + this.id
+  
+        this.setTexture(texture)
+  
+        this.scene.tweens.add({
+          targets: this,
+          scaleX: 1,
+          ease: 'Linear',
+          duration: 150,
+          onComplete: animationReslover
+        })
+      }
+  
+      this.scene.tweens.add({
+        targets: this,
+        scaleX: 0,
+        ease: 'Linear',
+        duration: 150,
+        onComplete: show
+      })
+    })
   }
 
-  close() {
+  async open() {
+    await this.flip()
+    this._isOpen = true
+  }
+
+  async close() {
+    await this.flip()
     this._isOpen = false
-    this.setTexture('card')
   }
 }
