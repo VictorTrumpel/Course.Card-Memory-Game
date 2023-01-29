@@ -17,10 +17,10 @@ export class GameScene extends Scene {
     super('GameScene')
   }
 
-  create() {
+  async create() {
     this.cardDealer = new CardDealer(this)
 
-    this.cardDealer.createCards()
+    await this.cardDealer.createCards()
 
     this.initEvents()    
   }
