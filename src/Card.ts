@@ -43,8 +43,8 @@ export class Card extends GameObjects.Sprite {
     return new Promise((animationReslover) => {
       const show = () => {
         const texture = this._isOpen
-          ? 'card'
-          : 'card' + this.id
+          ? 'card' + this.id
+          : 'card' 
   
         this.setTexture(texture)
   
@@ -68,12 +68,12 @@ export class Card extends GameObjects.Sprite {
   }
 
   async open() {
-    await this.flip()
     this._isOpen = true
+    await this.flip()
   }
 
   async close() {
-    await this.flip()
     this._isOpen = false
+    await this.flip()
   }
 }
