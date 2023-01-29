@@ -1,1 +1,33 @@
 @import url("./base.css");
+
+.menu {
+  position: absolute;
+  height: 10rem;
+  width: 15rem;
+  left: 50%;
+  top: 10rem;
+
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255);
+}
+
+.menu button {
+  margin-top: 1rem;
+  width: 10rem;
+  height: 2rem;
+  cursor: pointer;
+  background: white;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  border: none;
+}
+
+.menu span {
+  font-weight: bold;
+}

@@ -1,16 +1,28 @@
 import { Scene } from 'phaser'
 import { Card } from '../Card'
 import { CardDealer } from '../CardDealer'
+import { MemoDOM } from '../MemoDOM'
 
 export class GameScene extends Scene {
-  cardDealer: CardDealer
+  private _cardDealer: CardDealer
 
-  onCardClick = (_: unknown, card: Card) => {
-    this.cardDealer.openCard(card)
+  private _menuDOM: MemoDOM
+
+  onStartGame = async () => {
+    await this._cardDealer.createCards()
+    this.input.on('gameobjectdown', this.onCardClick)
   }
 
-  onAllCardsOpen = () => {
+  onRestartGame = () => {
     this.scene.restart()
+  }
+
+  onCardClick = (_: unknown, card: Card) => {
+    this._cardDealer.openCard(card)
+  }  
+
+  onAllCardsOpen = () => {
+    this._menuDOM.render({ type: 'end', isWin: true })
   }
 
   constructor() {
@@ -18,15 +30,19 @@ export class GameScene extends Scene {
   }
 
   async create() {
-    this.cardDealer = new CardDealer(this)
+    this._cardDealer = new CardDealer(this)
 
-    await this.cardDealer.createCards()
+    this._menuDOM = new MemoDOM()
+
+    this._menuDOM.render({ type: 'start' })
 
     this.initEvents()    
   }
 
   initEvents() {
-    this.cardDealer.onAllCardsOpen = this.onAllCardsOpen
-    this.input.on('gameobjectdown', this.onCardClick)
+    this._menuDOM.onStartGame = this.onStartGame
+    this._menuDOM.onRestartGame = this.onRestartGame
+    this._cardDealer.onAllCardsOpen = this.onAllCardsOpen
+    
   }
 }
