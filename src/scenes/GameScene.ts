@@ -3,6 +3,10 @@ import { Card } from '../Card'
 import { CardDealer } from '../CardDealer'
 import { MemoDOM } from '../MemoDOM'
 
+type SceneCreateProps = {
+  isRestart?: boolean
+}
+
 export class GameScene extends Scene {
   private _cardDealer: CardDealer
 
@@ -14,7 +18,7 @@ export class GameScene extends Scene {
   }
 
   onRestartGame = () => {
-    this.scene.restart()
+    this.scene.restart({ isRestart: true })
   }
 
   onCardClick = (_: unknown, card: Card) => {
@@ -29,12 +33,14 @@ export class GameScene extends Scene {
     super('GameScene')
   }
 
-  async create() {
+  async create({ isRestart }: SceneCreateProps) {
     this._cardDealer = new CardDealer(this)
 
     this._menuDOM = new MemoDOM()
 
-    this._menuDOM.render({ type: 'start' })
+    isRestart
+      ? this.onStartGame()
+      : this._menuDOM.render({ type: 'start' })
 
     this.initEvents()    
   }
