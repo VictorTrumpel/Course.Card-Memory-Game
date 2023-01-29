@@ -15,8 +15,11 @@ export class GameScene extends Scene {
 
   private _timer: Timer
 
+  private _isGameOver: boolean
+
   onStartGame = async () => {
     await this._cardDealer.createCards()
+    this._timer.start()
     this.input.on('gameobjectdown', this.onCardClick)
   }
 
@@ -25,11 +28,20 @@ export class GameScene extends Scene {
   }
 
   onCardClick = (_: unknown, card: Card) => {
+    if (this._isGameOver)
+      return
     this._cardDealer.openCard(card)
   }  
 
+  onTimerIsOver = () => {
+    this._menuDOM.render({ type: 'end', isWin: false })
+    this._isGameOver = true
+  }
+
   onAllCardsOpen = () => {
     this._menuDOM.render({ type: 'end', isWin: true })
+    this._timer.stop()
+    this._isGameOver = true
   }
 
   constructor() {
@@ -37,15 +49,15 @@ export class GameScene extends Scene {
   }
 
   async create({ isRestart }: SceneCreateProps) {
+    this._isGameOver = false
+
     this._cardDealer = new CardDealer(this)
 
     this._timer = new Timer(this, {
-      maxTime: 3,
-      x: 200,
+      maxTime: 30,
+      x: 600,
       y: 10
     })
-  
-    this._timer.start()
 
     this._menuDOM = new MemoDOM()
 
@@ -60,5 +72,6 @@ export class GameScene extends Scene {
     this._menuDOM.onStartGame = this.onStartGame
     this._menuDOM.onRestartGame = this.onRestartGame
     this._cardDealer.onAllCardsOpen = this.onAllCardsOpen
+    this._timer.onTimeIsOver = this.onTimerIsOver
   }
 }
