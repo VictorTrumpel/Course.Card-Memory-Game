@@ -3,22 +3,30 @@ import { Card } from '../Card'
 import { CardDealer } from '../CardDealer'
 
 export class GameScene extends Scene {
+  cardDealer: CardDealer
+
+  onCardClick = (_: unknown, card: Card) => {
+    this.cardDealer.openCard(card)
+  }
+
+  onAllCardsOpen = () => {
+    this.scene.restart()
+  }
 
   constructor() {
     super('GameScene')
   }
 
-  onCardClick(_: unknown, card: Card) {
-    card.open()
+  create() {
+    this.cardDealer = new CardDealer(this)
+
+    this.cardDealer.createCards()
+
+    this.initEvents()    
   }
 
-  create() {
-    const cardDealer = new CardDealer(this)
-
-    cardDealer.createCards()
-
-
+  initEvents() {
+    this.cardDealer.onAllCardsOpen = this.onAllCardsOpen
     this.input.on('gameobjectdown', this.onCardClick)
-    
   }
 }

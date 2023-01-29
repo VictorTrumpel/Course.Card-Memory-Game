@@ -6,13 +6,46 @@ import gameConfig from './gameConfig'
 export class CardDealer {
   private _scene: Scene
 
+  private possibleCardIds: Card['id'][] = ['1', '2', '3', '4', '5']
+  private prevOpenCard: Card | null = null
+  private guessedPairs = 0
+
+  public onAllCardsOpen: (...args: any) => any = () => null
+
   constructor(scene: Scene) {
     this._scene = scene
   }
 
+  openCard(card: Card) {
+    if (card.isOpen)
+      return
+    
+    card.open()
+
+    if (!this.prevOpenCard) {
+      this.prevOpenCard = card
+      return
+    }
+
+    if (this.prevOpenCard.id === card.id) {
+      this.guessedPairs += 1
+    } else {
+      this.prevOpenCard.close()
+      card.close()
+    }
+
+    this.prevOpenCard = null
+
+    if (this.guessedPairs === this.possibleCardIds.length) {
+      this.onAllCardsOpen()
+    }
+  }
+
   createCards() {
-    const possibleCardIds: Card['id'][] = ['1', '2', '3', '4', '5']
-    const allCardIdsPosition = Utils.Array.Shuffle([...possibleCardIds, ...possibleCardIds])
+    const allCardIdsPosition = Utils.Array.Shuffle([
+      ...this.possibleCardIds, 
+      ...this.possibleCardIds
+    ])
     const cardPositions = this.getCardsPosions()
 
     allCardIdsPosition.forEach((cardId, idx) => {
